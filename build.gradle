@@ -22,7 +22,7 @@ jar {
         attributes 'Main-Class': 'com.netsensia.rivalchess.generator.MatchPlayerKt'
     }
 
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 task sourcesJar(type: Jar) {
