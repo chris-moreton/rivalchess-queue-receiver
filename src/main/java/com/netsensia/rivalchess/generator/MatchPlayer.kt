@@ -3,5 +3,8 @@ package com.netsensia.rivalchess.generator
 import com.netsensia.rivalchess.service.JmsReceiver
 
 fun main() {
-    println(JmsReceiver.receive())
+    do {
+        val message = JmsReceiver.receive()
+        println(message)
+    } while (!message.equals("ERROR"))
 }

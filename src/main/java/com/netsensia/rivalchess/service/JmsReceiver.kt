@@ -38,10 +38,11 @@ object JmsReceiver {
 
         // We will be using TestMessage in our example. MessageProducer sent us a TextMessage
         // so we must cast to it to get access to its .getText() method.
+        connection.close()
+
         if (message is TextMessage) {
             return message.text
         }
-        connection.close()
         return "ERROR"
     }
 }
