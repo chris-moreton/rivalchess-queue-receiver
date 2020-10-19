@@ -39,7 +39,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     compile 'org.apache.activemq:activemq-all:5.12.0'
     compile 'org.springframework:spring-jms:5.2.9.RELEASE'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile 'com.amazonaws:aws-java-sdk-s3:1.11.7'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 
 test {
