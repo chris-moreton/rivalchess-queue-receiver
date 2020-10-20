@@ -1,16 +1,24 @@
 package com.netsensia.rivalchess.generator
 
+import com.google.gson.Gson
 import com.netsensia.rivalchess.service.JmsReceiver
 import com.netsensia.rivalchess.service.cuteChess
 import com.netsensia.rivalchess.service.getEngines
 
-fun game(engine1: String, engine2: String, nodes: Int) {
+fun game(matchRequest: MatchRequestPayload): Boolean {
+    val engine1 = matchRequest.engine1.version
+    val engine2 = matchRequest.engine2.version
     getEngines(engine1, engine2)
-    val result = cuteChess(engine1, engine2, nodes)
+    val result = cuteChess(matchRequest)
     println(result)
+    return true
 }
 
 fun main() {
-        //val message = JmsReceiver.receive()
-        game("33.0.1", "33.0.2", 1000)
+    do {
+        val gson = Gson()
+        val message = JmsReceiver.receive()
+        val matchRequest = gson.fromJson(message, MatchRequestPayload::class.java)
+        println("Match between ${matchRequest.engine1} and ${matchRequest.engine2}")
+    } while (game(matchRequest))
 }

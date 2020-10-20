@@ -1,43 +1,53 @@
 package com.netsensia.rivalchess.service
 
+import com.netsensia.rivalchess.generator.MatchRequestPayload
 import java.io.File
 import java.io.IOException
+import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
+import kotlin.system.exitProcess
 
-val parts = listOf(
-        "cutechess-cli",
-        "-engine",
-        "cmd=java -jar rivalchess-33.0.1-1.jar",
-        "-engine",
-        "cmd=java -jar rivalchess-33.0.2-1.jar",
-        "-each",
-        "nodes=1000",
-        "proto=uci",
-        "book=\"/home/chrismoreton/Chess/ProDeo.bin\"",
-        "timemargin=1500",
-        "st=0.25",
-        "-resign",
-        "movecount=10",
-        "score=600",
-        "-rounds",
-        "1",
-        "-pgnout",
-        "out.pgn"
-)
-
-fun cuteChess(engine1: String, engine2: String, nodes: Int): String? {
+fun cuteChess(matchRequest: MatchRequestPayload): String? {
     try {
+        val decimalFormat = DecimalFormat("#.##")
+        val seconds1 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
+        val seconds2 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
+        val parts = listOf(
+                "cutechess-cli",
+                "-engine",
+                "cmd=java -jar rivalchess-${matchRequest.engine1.version}-1.jar",
+                "nodes=${matchRequest.engine1.maxNodes}",
+                "st=$seconds1",
+                "-engine",
+                "cmd=java -jar rivalchess-${matchRequest.engine2.version}-1.jar",
+                "nodes=${matchRequest.engine2.maxNodes}",
+                "st=$seconds2",
+                "-each",
+                "proto=uci",
+                "book=/home/chrismoreton/Chess/ProDeo.bin",
+                "timemargin=1500",
+                "-resign",
+                "movecount=10",
+                "score=600",
+                "-rounds",
+                "1",
+                "-pgnout",
+                "/tmp/out.pgn"
+        )
+
+        File("/tmp/out.pgn").delete()
+
         val proc = ProcessBuilder(parts)
                 .directory(File("/tmp"))
                 .redirectOutput(ProcessBuilder.Redirect.PIPE)
                 .redirectError(ProcessBuilder.Redirect.PIPE)
                 .start()
 
-        proc.waitFor(5, TimeUnit.MINUTES)
+        proc.waitFor(120, TimeUnit.MINUTES)
 
         if (proc.exitValue() != 0) {
-            val output = proc.errorStream.bufferedReader().readText()
-            return output
+            println(proc.errorStream.bufferedReader().readText())
+            exitProcess(proc.exitValue())
         } else {
             println("That seemed to work")
             val output = proc.inputStream.bufferedReader().readText()

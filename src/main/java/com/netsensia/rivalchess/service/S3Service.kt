@@ -32,7 +32,7 @@ fun getEngine(
     if (File(filePath).exists()) {
         println("$s3Name already exists")
     } else {
-        println(s3Name)
+        println("Getting engine $engineVersion from S3")
         val o = s3Client.getObject(GetObjectRequest("rivalchess-jars", s3Name))
         val objectData: InputStream = o.objectContent
         File(filePath).writeBytes(objectData.readBytes())
@@ -42,6 +42,6 @@ fun getEngine(
 
 fun getEngines(engine1: String, engine2: String) {
     val client = getS3Client()
-    getEngine(client, "33.0.1")
-    getEngine(client, "33.0.2")
+    getEngine(client, engine1)
+    getEngine(client, engine2)
 }
