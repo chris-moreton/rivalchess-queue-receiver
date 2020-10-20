@@ -7,7 +7,7 @@ data class EngineSettings(
         val openingBook: String
 )
 
-data class MatchRequestPayload(
+data class MatchRequest(
         val engine1: EngineSettings,
         val engine2: EngineSettings
 )
