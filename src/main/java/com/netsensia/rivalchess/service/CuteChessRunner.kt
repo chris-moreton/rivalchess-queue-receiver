@@ -13,7 +13,7 @@ fun cuteChess(matchRequest: MatchRequest): String? {
         val seconds1 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
         val seconds2 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
         val parts = listOf(
-                "cutechess-cli",
+                "/cutechess-cli/cutechess-cli",
                 "-engine",
                 "cmd=java -jar rivalchess-${matchRequest.engine1.version}-1.jar",
                 "nodes=${matchRequest.engine1.maxNodes}",
