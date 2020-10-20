@@ -22,18 +22,22 @@ fun getS3Client(): AmazonS3Client {
     }
 }
 
-
 fun getEngine(
         s3Client: AmazonS3Client,
         engineVersion: String
 ) {
     val s3Name = "rivalchess-${engineVersion}-1.jar"
-    println(s3Name)
-    val o = s3Client.getObject(GetObjectRequest("rivalchess-jars", s3Name))
-    val objectData: InputStream = o.objectContent
     val filePath = "/tmp/$s3Name"
-    File(filePath).writeBytes(objectData.readBytes())
-    objectData.close()
+
+    if (File(filePath).exists()) {
+        println("$s3Name already exists")
+    } else {
+        println(s3Name)
+        val o = s3Client.getObject(GetObjectRequest("rivalchess-jars", s3Name))
+        val objectData: InputStream = o.objectContent
+        File(filePath).writeBytes(objectData.readBytes())
+        objectData.close()
+    }
 }
 
 fun getEngines(engine1: String, engine2: String) {
