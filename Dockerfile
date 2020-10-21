@@ -9,7 +9,7 @@ RUN tar -zxvf cutechess-cli-1.2.0-linux64.tar.gz
 
 ARG DEPENDENCY=build/libs
 
-ARG JAR_FILE=build/libs/rivalchess-generator-1.0.0.jar
+ARG JAR_FILE=build/libs/rivalchess-vie-player-1.0.0.jar
 COPY ${JAR_FILE} app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]
