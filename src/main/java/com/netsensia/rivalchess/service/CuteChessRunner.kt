@@ -1,13 +1,13 @@
 package com.netsensia.rivalchess.service
 
-import com.netsensia.rivalchess.generator.MatchRequest
+import com.netsensia.rivalchess.vie.model.EngineSettings
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
-fun cuteChess(matchRequest: MatchRequest): String? {
+fun cuteChess(matchRequest: EngineSettings): String? {
     try {
         val decimalFormat = DecimalFormat("#.##")
         val seconds1 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
@@ -34,6 +34,8 @@ fun cuteChess(matchRequest: MatchRequest): String? {
                 "-pgnout",
                 "/tmp/out.pgn"
         )
+
+        println("Executing command: " + parts.joinToString (separator = " ") { it })
 
         File("/tmp/out.pgn").delete()
 

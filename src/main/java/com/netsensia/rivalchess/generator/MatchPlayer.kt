@@ -5,9 +5,11 @@ import com.netsensia.rivalchess.service.JmsReceiver
 import com.netsensia.rivalchess.service.JmsSender
 import com.netsensia.rivalchess.service.cuteChess
 import com.netsensia.rivalchess.service.getEngines
+import com.netsensia.rivalchess.vie.model.EngineSettings
+import com.netsensia.rivalchess.vie.model.MatchResult
 import java.io.File
 
-fun game(matchRequest: MatchRequest): Boolean {
+fun game(matchRequest: EngineSettings): Boolean {
     val engine1 = matchRequest.engine1.version
     val engine2 = matchRequest.engine2.version
     getEngines(engine1, engine2)
@@ -23,7 +25,7 @@ fun main() {
     do {
         val gson = Gson()
         val message = JmsReceiver.receive()
-        val matchRequest = gson.fromJson(message, MatchRequest::class.java)
+        val matchRequest = gson.fromJson(message, EngineSettings::class.java)
         println("Match between ${matchRequest.engine1} and ${matchRequest.engine2}")
     } while (game(matchRequest))
 }

@@ -41,6 +41,8 @@ dependencies {
     compile 'org.springframework:spring-jms:5.2.9.RELEASE'
     compile 'com.amazonaws:aws-java-sdk-s3:1.11.7'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'com.netsensia.rivalchess:rivalchess-vie-model:3.0.0'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+"
     compile 'com.google.code.gson:gson:2.8.2'
 }
 

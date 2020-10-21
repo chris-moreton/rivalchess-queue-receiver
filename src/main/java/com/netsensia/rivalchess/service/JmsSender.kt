@@ -1,7 +1,7 @@
 package com.netsensia.rivalchess.service
 
 import com.google.gson.Gson
-import com.netsensia.rivalchess.generator.MatchResult
+import com.netsensia.rivalchess.vie.model.MatchResult
 import org.apache.activemq.ActiveMQConnectionFactory
 import javax.jms.Destination
 import javax.jms.JMSException
