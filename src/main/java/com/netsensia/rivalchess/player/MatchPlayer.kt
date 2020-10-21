@@ -1,4 +1,4 @@
-package com.netsensia.rivalchess.generator
+package com.netsensia.rivalchess.player
 
 import com.google.gson.Gson
 import com.netsensia.rivalchess.service.cuteChess
