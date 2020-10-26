@@ -31,20 +31,20 @@ fun game(matchRequest: EngineSettings): Boolean {
     val engine2 = matchRequest.engine2.version
     getEngines(engine1, engine2)
     getOpeningBook(matchRequest.engine1.openingBook)
-    getOpeningBook(matchRequest.engine2.openingBook)
+    println("Files retrieved, starting match")
     val result = cuteChess(matchRequest)
     println(result)
     val pgn = File("/tmp/out.pgn").readText()
     val matchResult = MatchResult(matchRequest, pgn)
-    JmsSender.send("MatchResults", matchResult)
+    JmsSender.send("MatchResulted", matchResult)
     return true
 }
 
 fun main() {
     do {
         val gson = Gson()
-        val message = JmsReceiver.receive("MatchRequests")
+        val message = JmsReceiver.receive("MatchRequested")
         val matchRequest = gson.fromJson(message, EngineSettings::class.java)
-        println("Match between ${matchRequest.engine1} and ${matchRequest.engine2}")
+        println("Starting match ${matchRequest.engine1} v ${matchRequest.engine2}")
     } while (game(matchRequest))
 }
