@@ -39,7 +39,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'com.google.code.gson:gson:2.8.2'
-    compile 'com.netsensia.rivalchess:rivalchess-vie-model:3.0.0'
+    compile 'com.netsensia.rivalchess:rivalchess-vie-model:4.0.0'
     compile 'com.netsensia.rivalchess:rivalchess-vie-utils:25.0.4'
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+"
     compile 'com.google.code.gson:gson:2.8.2'
