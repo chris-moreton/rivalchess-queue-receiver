@@ -1,11 +1,19 @@
 package com.netsensia.rivalchess.service
 
+import com.netsensia.rivalchess.player.getEngineS3Name
 import com.netsensia.rivalchess.vie.model.EngineSettings
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
+
+fun getJavaCommand(engineVersion: String): String {
+    if (engineVersion.contains("cuckoo"))
+        return "cmd=java -jar ${getEngineS3Name(engineVersion)} uci"
+
+    return "cmd=java -jar ${getEngineS3Name(engineVersion)}"
+}
 
 fun cuteChess(matchRequest: EngineSettings): String? {
     try {
@@ -15,12 +23,12 @@ fun cuteChess(matchRequest: EngineSettings): String? {
         val parts = listOf(
                 "/cutechess-cli/cutechess-cli",
                 "-engine",
-                "cmd=java -jar rivalchess-${matchRequest.engine1.version}-1.jar",
+                getJavaCommand(matchRequest.engine1.version),
                 "nodes=${matchRequest.engine1.maxNodes}",
                 "book=/tmp/${matchRequest.engine1.openingBook}.bin",
                 "st=${seconds1}",
                 "-engine",
-                "cmd=java -jar rivalchess-${matchRequest.engine2.version}-1.jar",
+                getJavaCommand(matchRequest.engine2.version),
                 "nodes=${matchRequest.engine2.maxNodes}",
                 "book=/tmp/${matchRequest.engine2.openingBook}.bin",
                 "st=${seconds2}",

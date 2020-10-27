@@ -9,8 +9,13 @@ import com.netsensia.rivalchess.vie.model.EngineSettings
 import com.netsensia.rivalchess.vie.model.MatchResult
 import java.io.File
 
+fun getEngineS3Name(engineVersion: String) =
+    if (engineVersion.replace(".", "").toIntOrNull() != null)
+        "rivalchess-${engineVersion}-1.jar" else "$engineVersion.jar"
+
 fun getEngine(engineVersion: String) {
-    val s3Name = "rivalchess-${engineVersion}-1.jar"
+
+    val s3Name = getEngineS3Name(engineVersion)
     val filePath = "/tmp/$s3Name"
     getFile("rivalchess-jars", s3Name, filePath)
 }
@@ -27,6 +32,10 @@ fun getEngines(engine1: String, engine2: String) {
 }
 
 fun game(matchRequest: EngineSettings): Boolean {
+    if (matchRequest.engine1.maxNodes < 100 || matchRequest.engine2.maxNodes < 100) {
+        println("Dodgy request ${matchRequest}")
+        return true
+    }
     val engine1 = matchRequest.engine1.version
     val engine2 = matchRequest.engine2.version
     getEngines(engine1, engine2)
