@@ -5,7 +5,7 @@ import com.netsensia.rivalchess.service.cuteChess
 import com.netsensia.rivalchess.utils.JmsReceiver
 import com.netsensia.rivalchess.utils.JmsSender
 import com.netsensia.rivalchess.utils.getFile
-import com.netsensia.rivalchess.vie.model.EngineSettings
+import com.netsensia.rivalchess.vie.model.EngineMatch
 import com.netsensia.rivalchess.vie.model.MatchResult
 import java.io.File
 
@@ -31,7 +31,7 @@ fun getEngines(engine1: String, engine2: String) {
     getEngine(engine2)
 }
 
-fun game(matchRequest: EngineSettings): Boolean {
+fun game(matchRequest: EngineMatch): Boolean {
     if (matchRequest.engine1.maxNodes < 100 || matchRequest.engine2.maxNodes < 100) {
         println("Dodgy request ${matchRequest}")
         return true
@@ -50,10 +50,20 @@ fun game(matchRequest: EngineSettings): Boolean {
 }
 
 fun main() {
+    var sleepDuration = 300000L
+    val sleepIncrement = 300000
     do {
         val gson = Gson()
         val message = JmsReceiver.receive("MatchRequested")
-        val matchRequest = gson.fromJson(message, EngineSettings::class.java)
+        val matchRequest = gson.fromJson(message, EngineMatch::class.java)
         println("Starting match ${matchRequest.engine1} v ${matchRequest.engine2}")
-    } while (game(matchRequest))
+        var cont = false
+        try {
+            cont = game(matchRequest)
+        } catch (e: Exception) {
+            Thread.sleep(sleepDuration)
+            sleepDuration += sleepIncrement
+            cont = true
+        }
+    } while (cont)
 }

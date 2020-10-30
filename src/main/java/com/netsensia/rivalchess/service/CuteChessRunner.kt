@@ -1,7 +1,7 @@
 package com.netsensia.rivalchess.service
 
 import com.netsensia.rivalchess.player.getEngineS3Name
-import com.netsensia.rivalchess.vie.model.EngineSettings
+import com.netsensia.rivalchess.vie.model.EngineMatch
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat
@@ -15,7 +15,7 @@ fun getJavaCommand(engineVersion: String): String {
     return "cmd=java -jar ${getEngineS3Name(engineVersion)}"
 }
 
-fun cuteChess(matchRequest: EngineSettings): String? {
+fun cuteChess(matchRequest: EngineMatch): String? {
     try {
         val decimalFormat = DecimalFormat("#.##")
         val seconds1 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
