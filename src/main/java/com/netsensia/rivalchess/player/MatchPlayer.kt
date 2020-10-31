@@ -24,7 +24,7 @@ fun getEngine(engineVersion: String) {
 fun getOpeningBook(openingBook: String) {
     val s3Name = "${openingBook}.bin"
     val filePath = "/tmp/$s3Name"
-    //getFile("rivalchess-openings", s3Name, filePath)
+    getFile("rivalchess-openings", s3Name, filePath)
 }
 
 fun getEngines(engine1: String, engine2: String) {

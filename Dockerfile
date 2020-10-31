@@ -12,8 +12,6 @@ RUN apt-get install -y xvfb
 RUN wget https://github.com/cutechess/cutechess/releases/download/1.2.0/cutechess-cli-1.2.0-linux64.tar.gz
 RUN tar -zxvf cutechess-cli-1.2.0-linux64.tar.gz
 
-COPY Fischerle.jar .
-
 ARG DEPENDENCY=build/libs
 
 ARG JAR_FILE=build/libs/rivalchess-vie-player-1.0.0.jar

@@ -39,14 +39,10 @@ fun cuteChess(matchRequest: EngineMatch): String? {
                 "-each",
                 "proto=uci",
                 "timemargin=1500",
-                "-resign",
-                "movecount=10",
-                "score=600",
                 "-rounds",
                 "1",
                 "-pgnout",
-                "/tmp/out.pgn",
-                "-debug"
+                "/tmp/out.pgn"
         )
 
         println("Executing command: " + parts.joinToString (separator = " ") { it })
