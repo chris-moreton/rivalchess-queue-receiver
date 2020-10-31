@@ -9,8 +9,11 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
 fun getJavaCommand(engineVersion: String): String {
-    if (engineVersion.contains("cuckoo") || engineVersion.contains("Fischerle"))
-        return "cmd=java -jar ${getEngineS3Name(engineVersion)} uci"
+    val addUciToEnginesContaining = listOf("cuckoo", "Fischerle")
+    addUciToEnginesContaining.forEach {
+        if (engineVersion.contains(it))
+            return "cmd=java -jar ${getEngineS3Name(engineVersion)} uci"
+    }
 
     return "cmd=java -jar ${getEngineS3Name(engineVersion)}"
 }
@@ -18,9 +21,10 @@ fun getJavaCommand(engineVersion: String): String {
 fun cuteChess(matchRequest: EngineMatch): String? {
     try {
         val decimalFormat = DecimalFormat("#.##")
-        val seconds1 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
-        val seconds2 = decimalFormat.format(matchRequest.engine1.maxMillis / 1000)
+        val seconds1 = decimalFormat.format(matchRequest.engine1.maxMillis.toDouble() / 1000.0)
+        val seconds2 = decimalFormat.format(matchRequest.engine1.maxMillis.toDouble() / 1000.0)
         val parts = listOf(
+                "xvfb-run",
                 "/cutechess-cli/cutechess-cli",
                 "-engine",
                 getJavaCommand(matchRequest.engine1.version),
@@ -41,7 +45,8 @@ fun cuteChess(matchRequest: EngineMatch): String? {
                 "-rounds",
                 "1",
                 "-pgnout",
-                "/tmp/out.pgn"
+                "/tmp/out.pgn",
+                "-debug"
         )
 
         println("Executing command: " + parts.joinToString (separator = " ") { it })

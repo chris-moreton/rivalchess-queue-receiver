@@ -8,6 +8,7 @@ import com.netsensia.rivalchess.utils.getFile
 import com.netsensia.rivalchess.vie.model.EngineMatch
 import com.netsensia.rivalchess.vie.model.MatchResult
 import java.io.File
+import kotlin.system.exitProcess
 
 fun getEngineS3Name(engineVersion: String) =
     if (engineVersion.replace(".", "").toIntOrNull() != null)
@@ -23,7 +24,7 @@ fun getEngine(engineVersion: String) {
 fun getOpeningBook(openingBook: String) {
     val s3Name = "${openingBook}.bin"
     val filePath = "/tmp/$s3Name"
-    getFile("rivalchess-openings", s3Name, filePath)
+    //getFile("rivalchess-openings", s3Name, filePath)
 }
 
 fun getEngines(engine1: String, engine2: String) {
@@ -40,9 +41,12 @@ fun game(matchRequest: EngineMatch): Boolean {
     val engine2 = matchRequest.engine2.version
     getEngines(engine1, engine2)
     getOpeningBook(matchRequest.engine1.openingBook)
+    getOpeningBook(matchRequest.engine2.openingBook)
     println("Files retrieved, starting match")
     val result = cuteChess(matchRequest)
     println(result)
+    if (result == null || result.contains("nan +/- nan"))
+        exitProcess(1)
     val pgn = File("/tmp/out.pgn").readText()
     val matchResult = MatchResult(matchRequest, pgn)
     JmsSender.send("MatchResulted", matchResult)
