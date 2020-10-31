@@ -5,7 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 VOLUME /tmp
 
 RUN apt-get -y update
-RUN apt-get install -y qt5-default openjdk-8-jdk
+RUN apt-get install -y qt5-default openjdk-14-jdk
 RUN apt-get install -y wget
 RUN apt-get install -y xvfb
 
@@ -16,6 +16,8 @@ ARG DEPENDENCY=build/libs
 
 ARG JAR_FILE=build/libs/rivalchess-vie-player-1.0.0.jar
 COPY ${JAR_FILE} app.jar
+COPY bin/books/* tmp/
+COPY bin/engines/* tmp/
 
 ENTRYPOINT ["java","-jar","/app.jar"]
 
