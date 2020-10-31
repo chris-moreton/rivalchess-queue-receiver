@@ -57,7 +57,7 @@ fun main() {
         val message = JmsReceiver.receive("MatchRequested")
         val matchRequest = gson.fromJson(message, EngineMatch::class.java)
         println("Starting match ${matchRequest.engine1} v ${matchRequest.engine2}")
-        var cont = false
+        var cont: Boolean
         try {
             cont = game(matchRequest)
         } catch (e: Exception) {

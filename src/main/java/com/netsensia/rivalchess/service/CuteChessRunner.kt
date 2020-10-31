@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
 fun getJavaCommand(engineVersion: String): String {
-    if (engineVersion.contains("cuckoo"))
+    if (engineVersion.contains("cuckoo") || engineVersion.contains("Fischerle"))
         return "cmd=java -jar ${getEngineS3Name(engineVersion)} uci"
 
     return "cmd=java -jar ${getEngineS3Name(engineVersion)}"
