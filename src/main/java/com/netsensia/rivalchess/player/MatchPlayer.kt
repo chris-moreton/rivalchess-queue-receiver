@@ -53,16 +53,17 @@ fun game(matchRequest: EngineMatch): Boolean {
     return true
 }
 
-fun main() {
+fun main(args: Array<String>) {
     var sleepDuration = 300000L
     val sleepIncrement = 300000
+    val drain = args.size > 0 && args[0].equals("drain")
     do {
         val gson = Gson()
         val message = JmsReceiver.receive("MatchRequested")
         val matchRequest = gson.fromJson(message, EngineMatch::class.java)
         println("Starting match ${matchRequest.engine1} v ${matchRequest.engine2}")
         try {
-            game(matchRequest)
+            if (!drain) game(matchRequest)
         } catch (e: Exception) {
             Thread.sleep(sleepDuration)
             sleepDuration += sleepIncrement
